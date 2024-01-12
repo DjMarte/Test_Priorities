@@ -3,11 +3,12 @@ using Microsoft.EntityFrameworkCore;
 using Test_Priorities.DAL;
 
 var builder = WebApplication.CreateBuilder(args);
-var ConStr = builder.Configuration.GetConnectionString("ConStr");
 
 // Add services to the container.
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
+
+var ConStr = builder.Configuration.GetConnectionString("ConStr");
 
 builder.Services.AddDbContext<Contexto>(options => options.UseSqlite(ConStr));
 
