@@ -1,11 +1,15 @@
 using Test_Priorities.Components;
-
+using Microsoft.EntityFrameworkCore;
+using Test_Priorities.DAL;
 
 var builder = WebApplication.CreateBuilder(args);
+var ConStr = builder.Configuration.GetConnectionString("ConStr");
 
 // Add services to the container.
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
+
+builder.Services.AddDbContext<Contexto>(options => options.UseSqlite(ConStr));
 
 var app = builder.Build();
 
