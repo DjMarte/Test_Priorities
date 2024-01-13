@@ -16,15 +16,15 @@
 			@*Prioridad Id:*@
 			<label>ID:</label>
 			<div class="input-group mb-3">
-				<InputNumber @bind-Value="prioridades.PrioridadId" class="id-input"></InputNumber>
+				<InputNumber @bind-Value="prioridad.PrioridadId" class="id-input"></InputNumber>
 				<button type="button" class="btn btn-primary" @onclick="Buscar"><i class="bi bi-search"></i> Buscar</button>
 			</div>
 			@*Descripción:*@
 			<div>
 				<br />
 				<label class="form-label">Descripci&oacute;n:</label>
-				<InputText @bind-Value="prioridades.Descripción" class="form-control"></InputText>
-				<ValidationMessage For="@(() => prioridades.Descripción)" />
+				<InputText @bind-Value="prioridad.Descripción" class="form-control"></InputText>
+				<ValidationMessage For="@(() => prioridad.Descripción)" />
 				@if (descripciónExistente) {
 					<p class="text-danger">Ya existe una Prioridad con esta descripción.</p>
 				}
@@ -33,8 +33,8 @@
 			<div>
 				<br />
 				<label class="form-label">D&iacute;as compromiso:</label>
-				<InputNumber @bind-Value="prioridades.DiasCompromiso" class="input-group-sm"></InputNumber>
-				<ValidationMessage For="@(() => prioridades.DiasCompromiso)" />
+				<InputNumber @bind-Value="prioridad.DiasCompromiso" class="input-group-sm"></InputNumber>
+				<ValidationMessage For="@(() => prioridad.DiasCompromiso)" />
 			</div>
 		</div>
 		<div class="card-footer ">
