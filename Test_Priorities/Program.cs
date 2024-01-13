@@ -1,6 +1,8 @@
 using Test_Priorities.Components;
 using Microsoft.EntityFrameworkCore;
 using Test_Priorities.DAL;
+using Test_Priorities.Models;
+using Test_Priorities.BILL;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,6 +13,7 @@ builder.Services.AddRazorComponents()
 var ConStr = builder.Configuration.GetConnectionString("ConStr");
 
 builder.Services.AddDbContext<Contexto>(options => options.UseSqlite(ConStr));
+builder.Services.AddScoped<PrioridadesBLL>();
 
 var app = builder.Build();
 
