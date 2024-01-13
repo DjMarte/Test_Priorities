@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using System.Linq.Expressions;
 using Test_Priorities.DAL;
 using Test_Priorities.Models;
 
@@ -45,6 +46,11 @@ namespace Test_Priorities.BILL
                 .SingleOrDefault();
         }
 
-
-    }
+		public List<Prioridades> ObtetenerLista(Expression<Func<Prioridades, bool>> criterio) {
+			return _contexto.Prioridades
+				.AsNoTracking()
+				.Where(criterio)
+				.ToList();
+		}
+	}
 }

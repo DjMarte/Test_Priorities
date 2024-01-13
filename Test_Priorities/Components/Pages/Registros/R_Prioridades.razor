@@ -1,5 +1,90 @@
-﻿<h3>R_Prioridades</h3>
+﻿@page "/prioridades"
+@page "/prioridades/{PrioridadId:int}"
+
+
+@inject PrioridadesBLL prioridadesBll
+
+<h3>R_Prioridades</h3>
+
+<EditForm Model="prioridad" OnValidSubmit="Guardar">
+	<DataAnnotationsValidator />
+	<div class="card">
+		<div class="card-header">
+			<h1>Registro de Prioridad</h1>
+		</div>
+		<div class="card-body">
+			@*Prioridad Id:*@
+			<label>ID:</label>
+			<div class="input-group mb-3">
+				<InputNumber @bind-Value="prioridades.PrioridadId" class="id-input"></InputNumber>
+				<button type="button" class="btn btn-primary" @onclick="Buscar"><i class="bi bi-search"></i> Buscar</button>
+			</div>
+			@*Descripción:*@
+			<div>
+				<br />
+				<label class="form-label">Descripci&oacute;n:</label>
+				<InputText @bind-Value="prioridades.Descripción" class="form-control"></InputText>
+				<ValidationMessage For="@(() => prioridades.Descripción)" />
+				@if (descripciónExistente) {
+					<p class="text-danger">Ya existe una Prioridad con esta descripción.</p>
+				}
+			</div>
+			@*Días compromiso:*@
+			<div>
+				<br />
+				<label class="form-label">D&iacute;as compromiso:</label>
+				<InputNumber @bind-Value="prioridades.DiasCompromiso" class="input-group-sm"></InputNumber>
+				<ValidationMessage For="@(() => prioridades.DiasCompromiso)" />
+			</div>
+		</div>
+		<div class="card-footer ">
+			<button type="button" class="btn btn-primary" @onclick="Nuevo"><i class="bi bi-file-earmark-plus-fill"></i> Nuevo</button>
+			<button type="submit" class="btn btn-success"><i class="bi bi-floppy"></i> Guardar</button>
+			<button type="button" class="btn btn-danger" @onclick="Eliminar"><i class="bi bi-trash3"></i> Eliminar</button>
+		</div>
+	</div>
+</EditForm>
 
 @code {
+	[Parameter]
+	public int PrioridadId { get; set; }
 
+	public Prioridades prioridad { get; set; } = new Prioridades();
+	public bool descripciónExistente = false;
+
+	protected override void OnInitialized() {
+		if(PrioridadId > 0) {
+			this.prioridad.PrioridadId = PrioridadId;
+			this.Buscar();
+		}
+	}
+
+	public void Buscar() {
+		var prioridadEncontrada = prioridadesBll.Buscar(prioridad.PrioridadId);
+		if(prioridadEncontrada != null) {
+			this.prioridad = prioridadEncontrada;
+		}
+	}
+
+	public void Nuevo() {
+		this.prioridad = new Prioridades();
+	}
+
+	public void Guardar() {
+		if (!Validar()) {
+			return;
+		}
+	}
+
+	public bool Validar() {
+		descripciónExistente = (prioridadesBll.ObtetenerLista(p => p.Descripción!.ToLower() == prioridad.Descripción!.ToLower()
+		&& p.PrioridadId != prioridad.PrioridadId).Any());
+
+		return descripciónExistente;
+	}
+	public void Eliminar() {
+		if(prioridadesBll.Existe(prioridad.PrioridadId) && prioridadesBll.Eliminar(this.prioridad)) {
+			this.Nuevo();
+		}
+	}
 }
